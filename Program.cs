@@ -21,15 +21,23 @@ namespace filläsare
             using (StreamReader file = new StreamReader(fileName))
             {
                 int counter = 0;
+                int charNum = 0;
+                int wordNum = 0;
                 string ln;
 
                 while ((ln = file.ReadLine()) != null)
                 {
-                    Console.WriteLine(ln);
+                    //Console.WriteLine(ln);
                     counter++;
+                    charNum += ln.Length; //Fixa radslutstecken, unix +1, windows +2
+                    var punctuation = ln.Where(Char.IsPunctuation).Distinct().ToArray();
+                    var words = ln.Split().Select(x => x.Trim(punctuation));
+                    wordNum += words.Count();
                 }
                 file.Close();
                 Console.WriteLine($"File has {counter} lines.");
+                Console.WriteLine($"File has {wordNum} words.");
+                Console.WriteLine("File has {0} chars", charNum);
             }
         }
     }
